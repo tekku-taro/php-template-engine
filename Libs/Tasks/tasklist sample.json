@@ -1,0 +1,21 @@
+[
+	{
+		  "name" : "サンプル001",
+		  "template" : "views/sample/test.php",
+		  "description" : "テスト用ファイルの雛形作成",
+		  "data" : {
+		     "key1" : "value1",  "key2" : "value2",  "key3" : "value3"
+		  },
+		  "output" : "result.php"
+	},
+	{
+		  "name" : "サンプル002",
+		  "template" : "views/sample/test2.php",
+		  "description" : "テスト用ファイルの雛形作成2",
+		  "data" : {
+			"key1" : "value1",  "key2" : "value2",  "key3" : "value3" 
+		  },
+		  "output" : "result2.php"
+	}
+
+]

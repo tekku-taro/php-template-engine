@@ -1,0 +1,21 @@
+{
+    "name": "taro/pagemaker",
+    "description": "php template engine",
+    "type": "library",
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
+	"autoload": {
+		"psr-4": {
+			"Taro\\PageMaker\\":"./Libs"
+		}
+	},
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "tekku-taro",
+            "email": "tekku.taro@gmail.com"
+        }
+    ],
+    "require": {}
+}
