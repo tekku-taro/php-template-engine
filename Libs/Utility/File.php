@@ -1,6 +1,8 @@
 <?php
 namespace Taro\PageMaker\Utility;
 
+define('DS', DIRECTORY_SEPARATOR);
+
 // ファイル管理
 class File
 {
@@ -9,14 +11,13 @@ class File
      *
      * @var string
      */
-    public static $root = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..';
+    public static $root = __DIR__ . DS . '..' . DS . '..';
     /**
      * キャッシュ保存フォルダ
      *
      * @var string
      */
-    public static $cachePath = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
-	. DIRECTORY_SEPARATOR . 'runtime' . DIRECTORY_SEPARATOR . 'views';
+    public static $cachePath = __DIR__ . DS . '..' . DS . '..' . DS . 'runtime' . DS . 'views';
     /**
      * ファイルの拡張子
      *
@@ -62,22 +63,22 @@ class File
     public static function buildPath(string $basePath, string  $path)
     {
         if (empty($basePath)) {
-            $basePath = DIRECTORY_SEPARATOR;
+            $basePath = DS;
         }
-        return rtrim(realpath($basePath), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . ltrim($path, DIRECTORY_SEPARATOR);
+        return rtrim(realpath($basePath), DS) . DS . ltrim($path, DS);
     }
 
     // 雛形パスの作成
     public static function buildTemplatePath(string  $path)
     {
-        $templatePath = self::$root  . DIRECTORY_SEPARATOR . 'templates';
+        $templatePath = self::$root  . DS . 'templates';
         return self::buildPath($templatePath, self::appendExtension($path));
     }
 
     // 出力パスの作成
     public static function buildOutputPath(string  $path)
     {
-        $outputPath = self::$root  . DIRECTORY_SEPARATOR . 'outputs';
+        $outputPath = self::$root  . DS . 'outputs';
         return self::buildPath($outputPath, self::appendExtension($path));
     }
 

@@ -14,8 +14,6 @@ class TaskHandler
     // タスクファイル(json) のパス
     public $filePath = __DIR__ . '/tasklist.json';
 
-    // キャッシュファイルのパス
-    public $cachePath = __DIR__ . '../Runtime/tasklist.cache';
 
     // タスクのキュー配列
     private $queues = [];
