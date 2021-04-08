@@ -11,6 +11,13 @@ class File
      */
     public static $root = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..';
     /**
+     * キャッシュ保存フォルダ
+     *
+     * @var string
+     */
+    public static $cachePath = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
+	. DIRECTORY_SEPARATOR . 'runtime' . DIRECTORY_SEPARATOR . 'views';
+    /**
      * ファイルの拡張子
      *
      * @var string
@@ -63,14 +70,14 @@ class File
     // 雛形パスの作成
     public static function buildTemplatePath(string  $path)
     {
-        $templatePath = self::$root  . DIRECTORY_SEPARATOR . 'Templates';
+        $templatePath = self::$root  . DIRECTORY_SEPARATOR . 'templates';
         return self::buildPath($templatePath, self::appendExtension($path));
     }
 
     // 出力パスの作成
     public static function buildOutputPath(string  $path)
     {
-        $outputPath = self::$root  . DIRECTORY_SEPARATOR . 'Outputs';
+        $outputPath = self::$root  . DIRECTORY_SEPARATOR . 'outputs';
         return self::buildPath($outputPath, self::appendExtension($path));
     }
 
@@ -87,17 +94,35 @@ class File
     }
 
     // キャッシュの作成
-    private static function createCache()
+    public static function saveCache($fileName, $content)
     {
+		$path = self::buildPath(self::$cachePath, self::cacheName($fileName) );
+		return file_put_contents($path, $content);
     }
 
     // キャッシュのロード
-    private static function loadCache()
+    public static function loadCache($fileName)
     {
+		if(($path = self::checkCache($fileName)) !== false) {
+			return file_get_contents($path);
+		}
+
+		return false;
     }
 
     // キャッシュのチェック
-    private static function checkCache()
+    private static function checkCache($fileName)
     {
+		$path = self::buildPath(self::$cachePath, self::cacheName($fileName) );
+		if(file_exists($path)) {
+			return $path;
+		}
+		return false;
+    }
+
+    // キャッシュファイル名の作成
+    private static function cacheName($fileName)
+    {
+		return hash( "sha256", $fileName);
     }
 }

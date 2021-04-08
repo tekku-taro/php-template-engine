@@ -1,0 +1,17 @@
+[
+	{
+		  "name" : "test001",
+		  "template" : "test001/index.php",
+		  "description" : "テスト用ファイル001",
+		  "data" : {
+		     "title" : "Test 001",  
+			 "sum" : 50,  
+			 "menus" : {
+				 "http:://mysite1": "MySite1",
+				 "http:://mysite2": "MySite2",
+				 "http:://mysite3": "MySite3"
+			 }
+		  },
+		  "output" : "result.php"
+	}
+]

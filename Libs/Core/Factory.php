@@ -15,6 +15,20 @@ class Factory
      */
     private $compiler;
 
+	/**
+	 * コンパイラのタイプ
+	 *
+	 * @var string view|codemake
+	 */
+	private $compilerType;
+
+	/**
+	 * キャッシュを使用するか
+	 *
+	 * @var string load|overwrite|ignore
+	 */
+	public $cacheMode = 'ignore';
+
     /**
      * タスク
      *
@@ -34,6 +48,12 @@ class Factory
     public function __construct(ICompiler $compiler)
     {
         $this->compiler = $compiler;
+
+        if ($this->compiler instanceof ViewCompiler) {
+            $this->compilerType = 'view';
+        } elseif ($this->compiler instanceof CodeMaker) {
+			$this->compilerType = 'codemake';
+		}
     }
     
     // 設定ロード
@@ -45,8 +65,25 @@ class Factory
     // メイン処理
     public function process()
     {
-        // コンパイル
-        $this->compile();
+		switch ($this->cacheMode) {
+			case 'load':
+				$cache = File::loadCache($this->task->template);
+				if($cache === false) {
+					$this->compile();
+					File::saveCache($this->task->template, $this->compiled);
+				}else{
+					$this->compiled = $cache;
+				}				
+				break;
+			case 'overwrite':
+				$this->compile();
+				File::saveCache($this->task->template, $this->compiled);				
+				break;
+			case 'ignore':
+				$this->compile();
+				break;
+		}
+		
         // データの出力
         $this->dataOutput();
     }
@@ -54,7 +91,7 @@ class Factory
     // コンパイル
     private function compile()
     {
-        $this->compiled = $this->compiler->run($this->task->template, $this->task->data);
+		$this->compiled = $this->compiler->run($this->task->template, $this->task->data);
     }
 
     // データの出力
@@ -62,7 +99,7 @@ class Factory
     {
         $this->saveToFile();
         
-        if ($this->compiler instanceof ViewCompiler) {
+        if ($this->compilerType  === 'view') {
             return	$this->render();
         }
     }
@@ -79,4 +116,5 @@ class Factory
     {
         $this->savedFile = File::save($this->compiled, $this->task->output);
     }
+
 }

@@ -85,7 +85,8 @@ class ViewCompiler implements ICompiler
 
     private function placeContent($template, $content)
     {
-        return preg_replace("/@content\s+?/", $content, $template);
+		// return preg_replace("/@content\s+?/", $content, $template);
+        return preg_replace("/".Directives::symbol('content')."\s+?/", $content, $template);
     }
 
     // ファイル読込
@@ -105,7 +106,8 @@ class ViewCompiler implements ICompiler
     // 変数の変換
     private function convVars($template)
     {
-        $pattern = "/\[\[\s*(.*?)\s*\]\]/";
+		// $pattern = "/\[\[\s*(.*?)\s*\]\]/";
+        $pattern = "/".Directives::symbol('var.begin')."\s*(.*?)\s*".Directives::symbol('var.end')."/";
 
         $beginMatches = $this->getMatchedBlocks($template, $pattern);
 
@@ -124,11 +126,14 @@ class ViewCompiler implements ICompiler
     // ifの変換
     private function convIfs($template)
     {
-        $begin = "/@if\s*\((.*?)\)/";
-        $elseif = "/@elseif\s*\((.*?)\)/";
-
-        $else = "/@else\s+?/";
-        $end = "/@endif\s+?/";
+        // $begin = "/@if\s*\((.*?)\)/";
+        $begin = "/".Directives::symbol('if.begin')."\s*".Directives::symbol('if.condbegin')."(.*?)".Directives::symbol('if.condend')."/";
+        // $elseif = "/@elseif\s*\((.*?)\)/";
+        $elseif = "/".Directives::symbol('elseif.begin')."\s*".Directives::symbol('elseif.condbegin')."(.*?)".Directives::symbol('elseif.condend')."/";
+        // $else = "/@else\s+?/";
+        $else = "/".Directives::symbol('if.else')."\s+?/";		
+        // $end = "/@endif\s+?/";
+        $end = "/".Directives::symbol('if.end')."\s+?/";		
 
         $beginMatches = $this->getMatchedBlocks($template, $begin);
         $elseifMatches = $this->getMatchedBlocks($template, $elseif);
@@ -154,8 +159,10 @@ class ViewCompiler implements ICompiler
     // forの変換
     private function convFors($template)
     {
-        $begin = "/@for\s*\((.*?)\)/";
-        $end = "/@endfor\s+?/";
+        // $begin = "/@for\s*\((.*?)\)/";
+        $begin = "/".Directives::symbol('for.begin')."\s*".Directives::symbol('for.condbegin')."(.*?)".Directives::symbol('for.condend')."/";
+        // $end = "/@endfor\s+?/";		
+        $end = "/".Directives::symbol('for.end')."\s+?/";
 
         $beginMatches = $this->getMatchedBlocks($template, $begin);
         $endMatches = $this->getMatchedBlocks($template, $end);
@@ -176,8 +183,10 @@ class ViewCompiler implements ICompiler
     // foreachの変換
     private function convForeachs($template)
     {
-        $begin = "/@foreach\s*\((.*?)\)/";
-        $end = "/@endforeach\s+?/";
+		// $begin = "/@foreach\s*\((.*?)\)/";
+        $begin = "/".Directives::symbol('foreach.begin')."\s*".Directives::symbol('foreach.condbegin')."(.*?)".Directives::symbol('foreach.condend')."/";
+        // $end = "/@endforeach\s+?/";
+        $end = "/".Directives::symbol('foreach.end')."\s+?/";
 
         $beginMatches = $this->getMatchedBlocks($template, $begin);
         $endMatches = $this->getMatchedBlocks($template, $end);
@@ -189,7 +198,7 @@ class ViewCompiler implements ICompiler
             $stmt = '<?php foreach(' . trim($beginMatches[1][$i]) . '): ?>';
 
             $template = str_replace($beginMatches[0][$i], $stmt, $template);
-            if (!isset($beginMatches[0][$i])) {
+            if (!isset($endMatches[0][$i])) {
                 throw new ErrorException('foreachの終わりのendforeachが見つかりません。');
             }
             $template = str_replace($endMatches[0][$i], '<?php endforeach; ?>', $template);
@@ -201,8 +210,10 @@ class ViewCompiler implements ICompiler
     // whileの変換
     private function convWhiles($template)
     {
-        $begin = "/@while\s*\((.*?)\)/";
-        $end = "/@endwhile\s+?/";
+        // $begin = "/@while\s*\((.*?)\)/";
+        $begin = "/".Directives::symbol('while.begin')."\s*".Directives::symbol('while.condbegin')."(.*?)".Directives::symbol('while.condend')."/";
+        // $end = "/@endwhile\s+?/";		
+        $end = "/".Directives::symbol('while.end')."\s+?/";
 
         $beginMatches = $this->getMatchedBlocks($template, $begin);
         $endMatches = $this->getMatchedBlocks($template, $end);
@@ -223,7 +234,8 @@ class ViewCompiler implements ICompiler
     // includesの変換
     private function convIncludes($template)
     {
-        $pattern = "/\s*@includes\s*\((.*?)\)/";
+        // $pattern = "/\s*@includes\s*\((.*?)\)/";
+        $pattern = "/".Directives::symbol('includes.begin')."\s*".Directives::symbol('includes.condbegin')."(.*?)".Directives::symbol('includes.condend')."/";
 
         $matches = $this->getMatchedBlocks($template, $pattern);
         
@@ -261,7 +273,9 @@ class ViewCompiler implements ICompiler
     // 継承元ファイルのパスと更新後のテンプレートデータを返す
     private function getParent($template)
     {
-        $pattern = "/\s*@extends\s*\((.*?)\)/";
+        // $pattern = "/\s*@extends\s*\((.*?)\)/";
+        $pattern = "/".Directives::symbol('extends.begin')."\s*".Directives::symbol('extends.condbegin')."(.*?)".Directives::symbol('extends.condend')."/";
+
 
         $match = $this->getMatchedBlock($template, $pattern);
         

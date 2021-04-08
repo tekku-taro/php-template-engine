@@ -1,33 +1,80 @@
 <?php
 namespace Taro\PageMaker\Core;
 
+use ErrorException;
+
 class Directives
 {
-    const VAR_DIRECTIVE = [
-        'begin'=>'[[', 'end'=>']]'
-    ];
-    const CONTENT_DIRECTIVE = [
-        'symbol'=>'@content'
-    ];
-    const IF_DIRECTIVE = [
-        'begin'=>'@if', 'end'=>'@endif','condition_begin'=>'(','condition_end'=>')'
-    ];
-    const FOR_DIRECTIVE = [
-        'begin'=>'@for', 'end'=>'@endfor','condition_begin'=>'(','condition_end'=>')'
-    ];
-    const FOREACH_DIRECTIVE = [
-        'begin'=>'@foreach', 'end'=>'@endforeach','condition_begin'=>'(','condition_end'=>')'
-    ];
-    const WHILE_DIRECTIVE =  [
-        'begin'=>'@while', 'end'=>'@endwhile','condition_begin'=>'(','condition_end'=>')'
-    ];
-    const INCLUDES_DIRECTIVE = [
-        'symbol'=>'@includes','file_begin'=>'(','file_end'=>')','ext'=>'.php'
-    ];
-    const EXTENDS_DIRECTIVE = [
-        'symbol'=>'@extends','file_begin'=>'(','file_end'=>')','ext'=>'.php'
-    ];
-    const FUNC_DIRECTIVE = [
-        'symbol'=>'|'
-    ];
+	const LIST = [
+		'var' =>[
+			'begin' => '\[\[',
+			'end' => '\]\]',
+		],
+		'content' =>'@content',
+		'if' =>[
+			'begin' => '@if',
+			'end' => '@endif',
+			'else' => '@else',
+			'condbegin' => '\(',
+			'condend' => '\)',
+		],
+		'elseif' =>[
+			'begin' => '@elseif',
+			'condbegin' => '\(',
+			'condend' => '\)',
+		],
+		'for' =>[
+			'begin' => '@for',
+			'end' => '@endfor',
+			'condbegin' => '\(',
+			'condend' => '\)',
+		],
+		'while' =>[
+			'begin' => '@while',
+			'end' => '@endwhile',
+			'condbegin' => '\(',
+			'condend' => '\)',
+		],
+		'foreach' =>[
+			'begin' => '@foreach',
+			'end' => '@endforeach',
+			'condbegin' => '\(',
+			'condend' => '\)',
+		],
+		'includes' =>[
+			'begin' => '@includes',
+			'condbegin' => '\(',
+			'condend' => '\)',
+		],
+		'extends' =>[
+			'begin' => '@extends',
+			'condbegin' => '\(',
+			'condend' => '\)',
+		],
+	];
+
+	public static function symbol($symbol) 
+	{
+		$keys = explode('.', $symbol);
+		$list = self::LIST;
+		return self::findElem($symbol, $list, $keys);
+	}
+
+	public static function findElem($symbol, $array, $keys)
+	{
+		$key = array_shift($keys);
+		if(!isset($array[$key])) {
+			throw new ErrorException($symbol. 'に対応するディレクティブが登録されていません。');
+		}
+
+		if(count($keys) === 0) {
+			return $array[$key];
+		}else{
+			return self::findElem($symbol, $array[$key], $keys);
+		}
+
+	}
+
+
 }
+
