@@ -5,7 +5,7 @@ use ErrorException;
 
 class Directives
 {
-	const LIST = [
+	public static $list = [
 		'var' =>[
 			'begin' => '\[\[',
 			'end' => '\]\]',
@@ -56,7 +56,7 @@ class Directives
 	public static function symbol($symbol) 
 	{
 		$keys = explode('.', $symbol);
-		$list = self::LIST;
+		$list = self::$list;
 		return self::findElem($symbol, $list, $keys);
 	}
 

@@ -13,14 +13,73 @@ class ViewCompilerTest extends TestCase
 
 
 	// includes限界テスト
-	// extends限界テスト
+	public function testIncludesToLimit()
+	{
+        $path = '\test001\includes\index.php';
+        $compiler = new ViewCompiler();
+		$compiler->minLevel = -3;
+        $actual = $compiler->run($path, []);
+
+		$expected = 
+'<h1>Includes Test</h1>
+<h2>Level1</h2>
+<h2>Level2</h2>
+<h2>Level3</h2>';
+
+        $this->assertEquals($this->uLineEnd($expected),$this->uLineEnd($actual));		
+	}
+
+	public function testIncludesOverLimit()
+	{
+        $path = '\test001\includes\index.php';
+        $compiler = new ViewCompiler();
+		$compiler->minLevel = -2;
+		try {
+			$actual = $compiler->run($path, []);
+		} catch (ErrorException $ex) {
+			$expected = 'Includeは2レベルまでが上限です。';
+			$this->assertEquals($expected, $ex->getMessage());
+		}
+
+	}
+
+	// extends 限界テスト
+	public function testExtendsToLimit()
+	{
+        $path = '\test001\extends\index.php';
+        $compiler = new ViewCompiler();
+		$compiler->maxLevel = 3;
+        $actual = $compiler->run($path, []);
+		print $actual;
+		$expected = 
+'<h2>Level3</h2>
+<h2>Level2</h2>
+<h2>Level1</h2>
+<h1>Extends Test</h1>';
+
+        $this->assertEquals($this->uLineEnd($expected),$this->uLineEnd($actual));		
+	}
+
+	public function testExtendsOverLimit()
+	{
+        $path = '\test001\extends\index.php';
+        $compiler = new ViewCompiler();
+		$compiler->maxLevel = 2;
+		try {
+			$actual = $compiler->run($path, []);
+		} catch (ErrorException $ex) {
+			$expected = '継承は2回までが上限です。';
+			$this->assertEquals($expected, $ex->getMessage());
+		}
+
+	}
+
 
     public function testRun_viewcompiler()
     {
         $path = '\test001\index.php';
         $compiler = new ViewCompiler();
         $actual = $compiler->run($path, []);
-
         $expected =
 '<!DOCTYPE html>
 <html lang="en">
@@ -32,7 +91,8 @@ class ViewCompilerTest extends TestCase
 	<title><?= $title ?></title>
 </head>
 
-<body><div class="globalnav">
+<body>
+	<div class="globalnav">
 	<nav>
 		<ul>
 			<?php foreach($menus as $href => $menu): ?>
@@ -59,6 +119,10 @@ class ViewCompilerTest extends TestCase
 	</div>
 </div>
 	</div>
+	<?php while($sum > 0): ?>
+	<a href="#">NO:<?= $sum ?></a>
+	<?php $sum -= 5; ?>
+	<?php endwhile; ?>
 
 </body>
 

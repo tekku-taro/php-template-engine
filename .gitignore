@@ -3,3 +3,4 @@ vendor
 .vscode
 debug.log
 test.php
+runtime/views/*

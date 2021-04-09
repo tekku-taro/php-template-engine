@@ -10,7 +10,14 @@ class TaskHandler
 {
     // コンパイラ
     public $compiler;
-        
+
+	/**
+	 * キャッシュを使用するか
+	 *
+	 * @var string load|overwrite|ignore
+	 */
+	public $cacheMode = 'load';
+
     // タスクファイル(json) のパス
     public $filePath = __DIR__ . '/tasklist.json';
 
@@ -62,7 +69,7 @@ class TaskHandler
     // タスクの実行
     public function run()
     {
-        $factory = new Factory($this->compiler);
+        $factory = new Factory($this->compiler, $this->cacheMode);
         while (!empty($this->queues)) {
             $task = $this->dequeue();
             $factory->new($task);

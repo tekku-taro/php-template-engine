@@ -7,6 +7,7 @@ use Taro\PageMaker\Tasks\TaskHandler;
 
 // タスクファイルの読み込み
 $taskHandler = new TaskHandler;
+$taskHandler->cacheMode = 'ignore';
 $taskHandler->setCompiler(new ViewCompiler);
 $taskHandler->load();
 

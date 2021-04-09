@@ -155,7 +155,7 @@ trait ConvDirectivesTrait {
             $includedData = $this->loadTemplate($filePath);
             $this->includeLevel -= 1;
             if ($this->includeLevel < $this->minLevel) {
-                throw new ErrorException('Includeは5レベルまでが上限です。');
+                throw new ErrorException('Includeは'.abs($this->minLevel).'レベルまでが上限です。');
             }
             ["content"=>$content,"parent" => $parent] = $this->compile($includedData);
             if (!empty($parent)) {
@@ -178,7 +178,7 @@ trait ConvDirectivesTrait {
     private function getParent($template)
     {
         // $pattern = "/\s*@extends\s*\((.*?)\)/";
-        $pattern = "/".Directives::symbol('extends.begin')."\s*".Directives::symbol('extends.condbegin')."(.*?)".Directives::symbol('extends.condend')."/";
+        $pattern = "/".Directives::symbol('extends.begin')."\s*".Directives::symbol('extends.condbegin')."(.*?)".Directives::symbol('extends.condend')."\s*/";
 
 
         $match = $this->getMatchedBlock($template, $pattern);

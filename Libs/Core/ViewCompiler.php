@@ -14,8 +14,8 @@ class ViewCompiler implements ICompiler
     public $compiled = ['parent'=>null, 'content'=>null];
 
     // 継承の上限
-    private $maxLevel = 5;
-    private $minLevel = -5;
+    public $maxLevel = 5;
+    public $minLevel = -5;
 
     private $extendLevel = 0;
     private $includeLevel = 0;
@@ -75,20 +75,33 @@ class ViewCompiler implements ICompiler
     private function compileParentFile($parent, $content)
     {
         if ($this->extendLevel > $this->maxLevel) {
-            throw new ErrorException('継承は5回までが上限です。');
+            throw new ErrorException('継承は'.$this->maxLevel.'回までが上限です。');
         }
 
         // 継承元ファイルのコンパイル
         $template = $this->loadTemplate($parent);
-        ["content"=>$parentContent,"parent" => $parent] = $this->compile($template);
 
-        return ["content"=> $this->placeContent($parentContent, $content),"parent" => $parent];
+        // 雛形データの書き換え
+        $compiled = $this->convert($template);
+
+		// 継承先のコンテンツを埋め込む
+		$compiled['content'] = $this->placeContent($compiled['content'], $content);
+        // 継承元があれば、$data[content]に保存
+        if (isset($compiled['parent'])) {
+            $content = $compiled['content'];
+            // 継承元ファイルの処理
+            $this->extendLevel += 1;
+            $compiled = $this->compileParentFile($compiled['parent'], $content);
+            $this->extendLevel -= 1;
+        }
+        // コンパイルデータを返す
+        return $compiled;
     }
 
     private function placeContent($template, $content)
     {
 		// return preg_replace("/@content\s+?/", $content, $template);
-        return preg_replace("/".Directives::symbol('content')."\s+?/", $content, $template);
+        return preg_replace("/".Directives::symbol('content')."\s*/", $content, $template);
     }
 
     // ファイル読込

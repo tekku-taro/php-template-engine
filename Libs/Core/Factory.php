@@ -27,7 +27,7 @@ class Factory
 	 *
 	 * @var string load|overwrite|ignore
 	 */
-	public $cacheMode = 'ignore';
+	public $cacheMode = 'load';
 
     /**
      * タスク
@@ -45,8 +45,9 @@ class Factory
     // 作成されたファイルデータ
     public $compiled;
 
-    public function __construct(ICompiler $compiler)
+    public function __construct(ICompiler $compiler, $cacheMode)
     {
+		$this->cacheMode = $cacheMode;
         $this->compiler = $compiler;
 
         if ($this->compiler instanceof ViewCompiler) {
