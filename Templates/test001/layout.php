@@ -14,10 +14,6 @@
 	<div class="container">
 		@content
 	</div>
-	@while ( $sum > 0 )
-	<a href="#">NO:[[ $sum ]]</a>
-	<?php $sum -= 5; ?>
-	@endwhile
 
 </body>
 

@@ -98,11 +98,21 @@ class Factory
     // データの出力
     private function dataOutput()
     {
-        $this->saveToFile();
-        
-        if ($this->compilerType  === 'view') {
-            return	$this->render();
-        }
+		
+		if ($this->compilerType  === 'view') {
+            switch ($this->cacheMode) {
+                case 'load':
+                case 'overwrite':
+                    $this->savedFile = File::checkCache($this->task->template);
+					break;
+                case 'ignore':
+					$this->saveToFile();
+                    break;
+                }			
+			return	$this->render();
+        }else {
+			$this->saveToFile();
+		}
     }
 
     // レンダリング処理

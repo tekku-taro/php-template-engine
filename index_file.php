@@ -6,8 +6,9 @@ use Taro\PageMaker\Tasks\TaskHandler;
 
 // タスクファイルの読み込み
 $taskHandler = new TaskHandler;
-$taskHandler->setJsonPath('tasklist_file');
+$taskHandler->cacheMode = 'ignore';
 $taskHandler->setCompiler(new CodeMaker);
+$taskHandler->setJsonPath('tasklist');
 $taskHandler->load();
 
 // タスク一覧の表示

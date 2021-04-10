@@ -112,7 +112,7 @@ class File
     }
 
     // キャッシュのチェック
-    private static function checkCache($fileName)
+    public static function checkCache($fileName)
     {
 		$path = self::buildPath(self::$cachePath, self::cacheName($fileName) );
 		if(file_exists($path)) {

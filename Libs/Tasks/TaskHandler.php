@@ -8,7 +8,11 @@ use Taro\PageMaker\Utility\File;
 // タスク管理
 class TaskHandler
 {
-    // コンパイラ
+    /**
+     * コンパイラ
+     *
+     * @var ICompiler
+     */
     public $compiler;
 
 	/**
