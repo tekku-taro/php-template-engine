@@ -8,6 +8,25 @@ trait ConvDirectivesTrait {
 
 
     // 変数の変換
+    private function convVarsSanitized($template)
+    {
+		// $pattern = "/\[\[\s*(.*?)\s*\]\]/";
+        $pattern = "/".Directives::symbol('var.begin_h')."\s*(.*?)\s*".Directives::symbol('var.end_h')."/";
+
+        $beginMatches = $this->getMatchedBlocks($template, $pattern);
+
+        if (empty($beginMatches[0])) {
+            return $template;
+        }
+        for ($i=0; $i < count($beginMatches[0]); $i++) {
+            $printVar = '<?= $this->h(' . trim($beginMatches[1][$i]) . ') ?>';
+
+            $template = str_replace($beginMatches[0][$i], $printVar, $template);
+        }
+
+        return $template;
+    }
+
     private function convVars($template)
     {
 		// $pattern = "/\[\[\s*(.*?)\s*\]\]/";

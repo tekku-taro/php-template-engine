@@ -80,6 +80,7 @@ class ViewCompilerTest extends TestCase
         $path = '\test001\index.php';
         $compiler = new ViewCompiler();
         $actual = $compiler->run($path, []);
+		print PHP_EOL. $actual;
         $expected =
 '<!DOCTYPE html>
 <html lang="en">
@@ -103,13 +104,11 @@ class ViewCompilerTest extends TestCase
 </div>
 
 	<div class="container">
-		
-
-<div class="test-if">
-	<?php if($sum < 10): ?> <p><?= $sum ?> は 10より小さい</p>
-		<?php elseif($sum> 10 && $sum < 20): ?> <p><?= $sum ?> は 10より大きく20より小さい</p>
+		<div class="test-if">
+	<?php if($sum < 10): ?> <p><?= $this->h($sum) ?> は 10より小さい</p>
+		<?php elseif($sum> 10 && $sum < 20): ?> <p><?= $this->h($sum) ?> は 10より大きく20より小さい</p>
 			<?php else: ?>
-			<p><?= $sum ?> は 20より大きい</p>
+			<p><?= $this->h($sum) ?> は 20より大きい</p>
 			<?php endif; ?>
 </div>
 <div class="test-for">
@@ -118,11 +117,10 @@ class ViewCompilerTest extends TestCase
 			<?php endfor; ?>
 	</div>
 </div>
-	</div>
-	<?php while($sum > 0): ?>
-	<a href="#">NO:<?= $sum ?></a>
-	<?php $sum -= 5; ?>
-	<?php endwhile; ?>
+
+<div class="test-sanitize">
+	<?= $this->h(\'<bold>BOLD</bold>\') ?>
+</div></div>
 
 </body>
 
@@ -134,6 +132,6 @@ class ViewCompilerTest extends TestCase
 
 	private function uLineEnd($text)
 	{
-		return str_replace("\r\n", "\n", $text);
+		return str_replace("\r\n", "\n", $text);//
 	}
 }

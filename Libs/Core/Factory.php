@@ -7,6 +7,7 @@ use Taro\PageMaker\Utility\File;
 // ファイルファクトリー
 class Factory
 {
+	use HelperTrait;
 
     /**
      * コンパイラ

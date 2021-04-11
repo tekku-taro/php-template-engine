@@ -64,6 +64,8 @@ class ViewCompiler implements ICompiler
         
         $template = $this->convIfs($template);
         
+        $template = $this->convVarsSanitized($template);
+		
         $template = $this->convVars($template);
         
         ['content'=>$template, 'parent'=>$parent] = $this->getParent($template);

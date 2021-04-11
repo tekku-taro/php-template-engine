@@ -9,7 +9,11 @@
 </div>
 <div class="test-for">
 	<div class="btn-group">
-		@for ($i = 0; $i < 10; $i++ ) <input class="btn btn-default" type="button" value="[[ $i ]]">
+		@for ($i = 0; $i < 10; $i++ ) <input class="btn btn-default" type="button" value="[% $i %]">
 			@endfor
 	</div>
+</div>
+
+<div class="test-sanitize">
+	[[ '<bold>BOLD</bold>' ]]
 </div>

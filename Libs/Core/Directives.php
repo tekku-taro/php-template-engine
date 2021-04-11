@@ -7,8 +7,10 @@ class Directives
 {
 	public static $list = [
 		'var' =>[
-			'begin' => '\[\[',
-			'end' => '\]\]',
+			'begin_h' => '\[\[',
+			'end_h' => '\]\]',
+			'begin' => '\[%',
+			'end' => '%\]',
 		],
 		'content' =>'@content',
 		'if' =>[

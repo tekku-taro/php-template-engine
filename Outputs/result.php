@@ -33,9 +33,7 @@
 </div>
 
 	<div class="container">
-		
-
-<div class="test-if">
+		<div class="test-if">
 				<p>50 は 20より大きい</p>
 			</div>
 <?php
@@ -57,8 +55,7 @@
 			 <input class="btn btn-default" type="button" value="8">
 			 <input class="btn btn-default" type="button" value="9">
 				</div>
-</div>
-	</div>
+</div></div>
 
 </body>
 
