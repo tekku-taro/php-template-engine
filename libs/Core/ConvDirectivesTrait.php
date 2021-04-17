@@ -73,10 +73,10 @@ trait ConvDirectivesTrait {
     // ifの変換
     private function convIfs($template)
     {
-        // $begin = "/@if\s*\((.*?)\)/";
-        $begin = "/".Directives::symbol('if.begin')."\s*".Directives::symbol('if.condbegin')."(.*?)".Directives::symbol('if.condend')."/";
-        // $elseif = "/@elseif\s*\((.*?)\)/";
-        $elseif = "/".Directives::symbol('elseif.begin')."\s*".Directives::symbol('elseif.condbegin')."(.*?)".Directives::symbol('elseif.condend')."/";
+        // $begin = "/@if\s*\((.*)\)/";
+        $begin = "/".Directives::symbol('if.begin')."\s*".Directives::symbol('if.condbegin')."(.*)".Directives::symbol('if.condend')."/";
+        // $elseif = "/@elseif\s*\((.*)\)/";
+        $elseif = "/".Directives::symbol('elseif.begin')."\s*".Directives::symbol('elseif.condbegin')."(.*)".Directives::symbol('elseif.condend')."/";
         // $else = "/@else\s+?/";
         $else = "/".Directives::symbol('if.else')."\s+?/";		
         // $end = "/@endif\s+?/";
@@ -106,8 +106,8 @@ trait ConvDirectivesTrait {
     // forの変換
     private function convFors($template)
     {
-        // $begin = "/@for\s*\((.*?)\)/";
-        $begin = "/".Directives::symbol('for.begin')."\s*".Directives::symbol('for.condbegin')."(.*?)".Directives::symbol('for.condend')."/";
+        // $begin = "/@for\s*\((.*)\)/";
+        $begin = "/".Directives::symbol('for.begin')."\s*".Directives::symbol('for.condbegin')."(.*)".Directives::symbol('for.condend')."/";
         // $end = "/@endfor\s+?/";		
         $end = "/".Directives::symbol('for.end')."\s+?/";
 
@@ -130,8 +130,8 @@ trait ConvDirectivesTrait {
     // foreachの変換
     private function convForeachs($template)
     {
-		// $begin = "/@foreach\s*\((.*?)\)/";
-        $begin = "/".Directives::symbol('foreach.begin')."\s*".Directives::symbol('foreach.condbegin')."(.*?)".Directives::symbol('foreach.condend')."/";
+		// $begin = "/@foreach\s*\((.*)\)/";
+        $begin = "/".Directives::symbol('foreach.begin')."\s*".Directives::symbol('foreach.condbegin')."(.*)".Directives::symbol('foreach.condend')."/";
         // $end = "/@endforeach\s+?/";
         $end = "/".Directives::symbol('foreach.end')."\s+?/";
 
@@ -157,8 +157,8 @@ trait ConvDirectivesTrait {
     // whileの変換
     private function convWhiles($template)
     {
-        // $begin = "/@while\s*\((.*?)\)/";
-        $begin = "/".Directives::symbol('while.begin')."\s*".Directives::symbol('while.condbegin')."(.*?)".Directives::symbol('while.condend')."/";
+        // $begin = "/@while\s*\((.*)\)/";
+        $begin = "/".Directives::symbol('while.begin')."\s*".Directives::symbol('while.condbegin')."(.*)".Directives::symbol('while.condend')."/";
         // $end = "/@endwhile\s+?/";		
         $end = "/".Directives::symbol('while.end')."\s+?/";
 
