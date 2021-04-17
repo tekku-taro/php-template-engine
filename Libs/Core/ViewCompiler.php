@@ -20,9 +20,13 @@ class ViewCompiler implements ICompiler
     private $extendLevel = 0;
     private $includeLevel = 0;
 
+	// 埋め込む変数データ
+	public $data;
+
     // 雛形からファイルデータを作成
     public function run($templatePath, array $data)
     {
+		$this->data = $data;
         $template = $this->loadTemplate($templatePath);
         ["content"=>$content,"parent" => $parent] = $this->compile($template);
         return $content;
@@ -54,6 +58,8 @@ class ViewCompiler implements ICompiler
     // 雛形データの書き換え
     private function convert($template)
     {
+		$template = $this->setVariable($template);
+
         $template = $this->convIncludes($template);
 
         $template = $this->convFors($template);

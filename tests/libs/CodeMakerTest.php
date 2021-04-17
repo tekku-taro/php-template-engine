@@ -16,7 +16,6 @@ class CodeMakerTest extends TestCase
         $path = '\test002\index.php';
         $compiler = new CodeMaker();
 		$data = [
-			"title" => "Test 002",  
 			"sum" => 50,  
 			"menus" => [
 				"http:://mysite1"=> "MySite1",

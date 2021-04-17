@@ -94,7 +94,10 @@ class Factory
     private function compile()
     {
 		$this->compiled = $this->compiler->run($this->task->template, $this->task->data);
-    }
+		if(!empty($this->compiler->data)) {
+			$this->task->data += $this->compiler->data;
+		}
+	}
 
     // データの出力
     private function dataOutput()

@@ -1,5 +1,5 @@
 @extends ( test001/layout )
-
+@setvar( title, '書籍一覧' )
 <div class="test-if">
 	@if ( $sum < 10 ) <p>[[ $sum ]] は 10より小さい</p>
 		@elseif ($sum> 10 && $sum < 20 ) <p>[[ $sum ]] は 10より大きく20より小さい</p>

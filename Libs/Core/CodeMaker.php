@@ -62,6 +62,8 @@ class CodeMaker implements ICompiler
     // 雛形データの書き換え
     private function convert($template)
     {
+		$template = $this->setVariable($template);
+		
         $template = $this->disablePHPCode($template);
 
         $template = $this->convIncludes($template);

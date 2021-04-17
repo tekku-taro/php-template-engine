@@ -46,6 +46,30 @@ trait ConvDirectivesTrait {
         return $template;
     }
 
+	// 変数を追加
+	private function setVariable($template)
+	{
+        // $pattern = "/\s*@setvar\s*\((.*?)\)/";
+        $pattern = "/".Directives::symbol('setvar.begin')."\s*".Directives::symbol('setvar.condbegin')."(.*?)".Directives::symbol('setvar.condend')."\s*/";
+		$matches = $this->getMatchedBlocks($template, $pattern);
+        
+        if (empty($matches[0])) {
+            return $template;
+        }
+        for ($i=0; $i < count($matches[0]); $i++) {
+            // $filepath = $this->getFilepath($matches[1][$i]);
+            [$varName, $value] = explode(',', $matches[1][$i]);
+            $this->data[trim($varName)] = trim(trim($value), "'\"");
+
+
+            $template = str_replace($matches[0][$i], '', $template);
+        }
+
+        return $template;
+
+	}	
+
+
     // ifの変換
     private function convIfs($template)
     {

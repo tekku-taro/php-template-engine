@@ -53,6 +53,11 @@ class Directives
 			'condbegin' => '\(',
 			'condend' => '\)',
 		],
+		'setvar' =>[
+			'begin' => '@setvar',
+			'condbegin' => '\(',
+			'condend' => '\)',
+		],		
 	];
 
 	public static function symbol($symbol) 
