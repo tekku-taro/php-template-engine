@@ -59,7 +59,7 @@ trait ConvDirectivesTrait {
         for ($i=0; $i < count($matches[0]); $i++) {
             // $filepath = $this->getFilepath($matches[1][$i]);
             [$varName, $value] = explode(',', $matches[1][$i]);
-            $this->data[trim($varName)] = trim(trim($value), "'\"");
+            $this->variables[trim($varName)] = trim(trim($value), "'\"");
 
 
             $template = str_replace($matches[0][$i], '', $template);
@@ -69,6 +69,22 @@ trait ConvDirectivesTrait {
 
 	}	
 
+	// 変数の宣言をファイルの先頭に追加
+	private function initVars($content, $variables)
+	{
+		if(empty($variables)) {
+			return $content;
+		}
+
+		$prependText = '<?php ' . PHP_EOL;
+		foreach ($variables as $name => $value) {
+			$prependText .= "$" . $name ."='" . $value . "';" . PHP_EOL;
+		}
+
+		$prependText .= '?>' . PHP_EOL;
+
+		return $prependText . $content;
+	}	
 
     // ifの変換
     private function convIfs($template)

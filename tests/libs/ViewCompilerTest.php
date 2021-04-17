@@ -82,7 +82,10 @@ class ViewCompilerTest extends TestCase
         $actual = $compiler->run($path, []);
 		print PHP_EOL. $actual;
         $expected =
-'<!DOCTYPE html>
+'<?php 
+$title=\'書籍一覧\';
+?>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>

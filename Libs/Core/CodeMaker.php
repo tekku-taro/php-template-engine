@@ -20,8 +20,11 @@ class CodeMaker implements ICompiler
     private $extendLevel = 0;
     private $includeLevel = 0;
 
-    // 埋め込む変数データ
+	// templateに渡されたデータ
     private $data;
+
+    // 埋め込む変数データ
+    private $variables;
 
 
     // 雛形からファイルデータを作成
@@ -31,6 +34,7 @@ class CodeMaker implements ICompiler
         $template = $this->loadTemplate($templatePath);
         ["content"=>$content,"parent" => $parent] = $this->compile($template);
 
+		$content = $this->initVars($content, $this->variables);
         $evalContent = $this->executeContent($content);
 
         return $this->enablePHPCode($evalContent);
