@@ -113,6 +113,8 @@ jsonファイルで指定されたファイル名で、/outputフォルダに保
 ## フレームワークでViewテンプレートエンジンとして利用
 
 ```php
+use Taro\PageMaker\Core\View;
+
 $path = '/sum'; // .php は省略できる
 // Viewクラスを使用
 $view = new View();
@@ -134,6 +136,9 @@ $view->render($path, [
 [[ $var ]]
 // サニタイズなし
 [% $var %]
+
+// 変数の追加 (変数名, データ)
+@setvar( title, '書籍一覧' )
 
 // レイアウトファイルでの継承先コンテンツの埋め込み
 @content
